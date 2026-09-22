@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: slvr_customers
+    description: >
+      Trusted current-state customer dataset. Deduplicates customer
+      records and applies customer business-quality rules.
+
+    columns:
+
+      - name: customer_id
+        description: Unique customer business identifier.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: state_code
+        description: Valid US state or DC code.
+        data_tests:
+          - not_null
+
+      - name: fico_score
+        description: Valid synthetic FICO score between 300 and 850.
+        data_tests:
+          - not_null
+
+      - name: kyc_status
+        description: Current customer KYC status.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - VERIFIED
+                  - PENDING
+                  - EXPIRED
+
+      - name: customer_status
+        description: Current customer lifecycle status.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - ACTIVE
+                  - INACTIVE
+                  - DECEASED
+
+      - name: ingestion_ts
+        description: Timestamp when the source record was ingested.
+        data_tests:
+          - not_null
+
+
+
+  - name: slvr_customers_rejected
+    description: Customer records excluded from the trusted silver customer dataset due to critical 
+                business data-quality failures.
+
+    columns:
+
+      - name: customer_id
+        description: Customer business identifier.
+
+      - name: rejection_reason
+        description: Primary business rule that caused the record to be rejected.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - INVALID_CUSTOMER_ID
+                  - INVALID_STATE
+                  - INVALID_FICO
+                  - INVALID_KYC_STATUS
+                  - INVALID_CUSTOMER_STATUS
+
+      - name: rejected_at
+        description: Timestamp when dbt generated the rejected customer record.
+        data_tests:
+          - not_null

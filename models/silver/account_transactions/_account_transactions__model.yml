@@ -1,0 +1,83 @@
+version: 2
+
+
+models:
+
+  - name: slvr_account_transactions
+    description: Trusted incremental account transaction dataset.
+      Grain is one row per transaction_id.
+
+
+    columns:
+      - name: transaction_id
+        data_tests:
+          - not_null 
+          - unique
+          
+      - name: account_id
+        data_tests:
+          - not_null 
+          - relationships:
+              arguments: 
+                to: ref('slvr_accounts')
+                field: account_id
+
+      - name: customer_id
+        data_tests:
+          - not_null 
+      
+      - name: transaction_direction
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: 
+                    - DEBIT
+                    - CREDIT
+
+      - name: transaction_status
+        data_tests:
+          - accepted_values:
+                arguments:
+                  values: 
+                    - POSTED
+                    - PENDING
+                    - REVERSED
+                
+      - name: currency_code
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values:
+                  - USD
+
+      - name: ingestion_ts
+        data_tests:
+          - not_null
+          
+
+  - name: slvr_account_transactions_rejected
+    description: Account transactions rejected because they 
+                failed silver-layer business or relationship checks.
+
+    columns:
+      - name: rejection_reason
+        data_tests:
+          - not_null 
+          - accepted_values:
+              arguments: 
+                values:
+                  - INVALID_TRANSACTION_ID
+                  - INVALID_ACCOUNT_ID
+                  - ACCOUNT_NOT_IN_SILVER
+                  - CUSTOMER_MISMATCH
+                  - INVALID_DIRECTION
+                  - INVALID_TRANSACTION_TYPE
+                  - INVALID_TRANSACTION_STATUS
+                  - INVALID_AMOUNT
+                  - INVALID_CURRENCY
+                  - INVALID_TRANSACTION_DATE
+                  - FUTURE_TRANSACTION_DATE
+        
+      - name: rejected_at
+        data_tests:
+          - not_null

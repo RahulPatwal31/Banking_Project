@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_account_transactions
+    description: standardized account transaction from the raw banking feed.
+
+
+    columns:
+      - name: transaction_id
+        data_tests:
+          - not_null
+          
+      - name: account_id
+        data_tests:
+          - not_null 
+        
+      - name: customer_id
+        data_tests:
+          - not_null
+          
+      - name: ingestion_ts
+        data_tests:
+          - not_null
+          

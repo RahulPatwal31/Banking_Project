@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: slvr_accounts
+    description: Trusted current banking account dataset after
+      deduplication and business data-quality validation.
+    columns:
+      - name: account_id
+        data_tests:
+        - not_null
+        - unique
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slvr_customers')
+                field: customer_id
+
+      - name: account_status
+        data_tests:
+        - accepted_values:
+            arguments:
+              values:
+                - ACTIVE
+                - CLOSED
+                - DORMANT
+
+      - name: currency_code
+        data_tests:
+          - accepted_values:
+              arguments: 
+                values:
+                  - USD
+    
+
+  - name: slvr_accounts_rejected
+    description: Account records rejected because they failed
+      Silver-layer data-quality rules.
+
+    columns:
+      - name: rejection_reason
+        data_tests:
+          - not_null 
+          - accepted_values:
+              arguments:
+                values:
+                  - INVALID_ACCOUNT_ID
+                  - INVALID_CUSTOMER_ID
+                  - CUSTOMER_NOT_IN_SILVER
+                  - INVALID_ACCOUNT_STATUS
+                  - INVALID_CURRENCY
+                  - INVALID_CURRENT_BALANCE
+                  - INVALID_PRODUCT
+
+      - name: rejected_at
+        data_tests:
+          - not_null 

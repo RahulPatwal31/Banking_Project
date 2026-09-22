@@ -1,0 +1,60 @@
+version: 2
+
+
+models:
+
+  - name: dim_customer
+    description: Gold customer dimension.
+
+    columns:
+      - name: customer_id
+        data_tests:
+          - not_null 
+          - unique
+
+
+  - name: dim_account
+    description: Gold banking account dimension.
+
+    columns:
+      - name: account_id
+        data_tests:
+          - not_null
+          - unique
+          
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments: 
+                to: ref('dim_customer')
+                field: customer_id
+
+  - name: fact_account_transaction
+    description:
+      Deposit account transaction fact table.
+      Grain is one row per transaction_id.  
+
+    columns:
+      - name: transaction_id
+        data_tests:
+          - not_null
+          - unique
+          
+      - name: account_id
+        data_tests:
+          - relationships:
+              arguments: 
+                to: ref('dim_account')
+                field: account_id
+
+  
+  - name: mart_deposit_summary
+    description: 
+                Account-level deposit performance and transaction summary.
+
+    columns:
+      - name: account_id
+        data_tests:
+          - not_null 
+          - unique
+          

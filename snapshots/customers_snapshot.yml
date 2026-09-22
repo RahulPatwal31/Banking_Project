@@ -1,0 +1,13 @@
+snapshots:
+
+  - name: customers_snapshot
+    relation: ref('slvr_customers')
+
+    description: SCD Type 2 history of trusted customer records.
+      Tracks customer attribute changes over time using
+      record_updated_at.
+
+    config: 
+      unique_key: customer_id
+      strategy: timestamp
+      updated_at: record_updated_at

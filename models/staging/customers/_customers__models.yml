@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: >
+      Standardized customer data sourced from the raw banking customer
+      table. Performs technical cleansing and datatype conversion while
+      preserving all source records.
+
+    columns:
+      - name: customer_id
+        description: Customer business identifier.
+        data_tests:
+          - not_null
+
+      - name: first_name
+        description: Customer first name.
+
+      - name: last_name
+        description: Customer last name.
+
+      - name: date_of_birth
+        description: Customer date of birth converted to DATE.
+
+      - name: state_code
+        description: Standardized US state code.
+
+      - name: fico_score
+        description: Customer synthetic FICO score converted to numeric.
+
+      - name: annual_income
+        description: Customer annual income converted to decimal.
+
+      - name: ingestion_ts
+        description: Timestamp when the source record was ingested.
+        data_tests:
+          - not_null

@@ -1,0 +1,22 @@
+version: 2
+
+
+models: 
+
+  - name: stg_accounts
+    description: standardized banking account records.
+
+    columns:
+      - name: account_id
+        data_tests:
+          - not_null
+          
+      - name: customer_id
+        data_tests:
+          - not_null
+        
+      - name: ingestion_ts
+        data_tests:
+          - not_null
+          
+           

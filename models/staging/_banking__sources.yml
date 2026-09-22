@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: banking_raw
+    description: Raw banking source tables loaded into Snowflake.
+    database: BANKING_PROJECT_DB
+    schema: RAW_schema
+
+    tables:
+      - name: customers
+        identifier: CUSTOMERS
+        description: Raw customer records loaded from customers.csv.
+
+      - name: customers_delta
+        identifier: CUSTOMERS_DELTA
+        description: Incremental customer records loaded after the initial load.
+
+      - name: accounts
+        identifier: ACCOUNTS
+        description: Raw accounts records loaded from accounts.csv.
+      
+      - name: account_transactions
+        identifier: ACCOUNT_TRANSACTIONS
+        description: Initial raw deposit account transactions.
+
+      - name: account_transactions_delta
+        identifier: ACCOUNT_TRANSACTIONS_DELTA
+        description: Daily incremental account transaction records.
