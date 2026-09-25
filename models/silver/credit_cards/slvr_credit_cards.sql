@@ -30,7 +30,7 @@ customer_check as (
             else false
         end as customer_exists_in_silver
     from latest_records c
-    left join {{ ref('slv_customers') }} sc
+    left join {{ ref('slvr_customers') }} sc
         on c.customer_id = sc.customer_id
 ),
 

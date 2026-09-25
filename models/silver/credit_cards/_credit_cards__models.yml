@@ -1,0 +1,60 @@
+version: 2
+
+models:
+
+  - name: slvr_credit_cards
+    description: Trusted current credit card master records.
+
+    columns:
+
+      - name: card_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('slvr_customers')
+                field: customer_id
+
+      - name: network
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - VISA
+                  - MASTERCARD
+
+      - name: card_status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - ACTIVE
+                  - BLOCKED
+                  - CLOSED
+                  - EXPIRED
+
+      - name: autopay_enabled
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - Y
+                  - N
+
+
+  - name: slvr_credit_cards_rejected
+
+    columns:
+
+      - name: rejection_reason
+        data_tests:
+          - not_null
+
+      - name: rejected_at
+        data_tests:
+          - not_null
