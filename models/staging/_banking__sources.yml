@@ -26,3 +26,7 @@ sources:
       - name: account_transactions_delta
         identifier: ACCOUNT_TRANSACTIONS_DELTA
         description: Daily incremental account transaction records.
+
+      - name: credit_cards
+        identifier: CREDIT_CARDS
+        description: Raw credit card master records.
